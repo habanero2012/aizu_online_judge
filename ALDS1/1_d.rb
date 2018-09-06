@@ -1,5 +1,5 @@
 n = gets.chomp.to_i
-r = n.times.map{ gets.chomp.to_i }
+r = Array.new(n) { gets.chomp.to_i }
 
 max = r.last - r.first
 min_r = r.shift
