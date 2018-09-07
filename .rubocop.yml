@@ -2,3 +2,8 @@ Style/EndOfLine:
   EnforcedStyle: lf
 Style/Documentation:
   Enabled: false
+Style/SpaceInsideHashLiteralBraces:
+  Enabled: false
+MethodLength:
+  CountComments: false
+  Max: 20
