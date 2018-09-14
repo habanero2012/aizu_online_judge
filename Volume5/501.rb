@@ -1,6 +1,3 @@
-input = File.join(File.dirname(__FILE__), '../input.txt')
-$stdin = StringIO.new(File.read(input))
-
 loop do
   n = gets.to_i
   break if n.zero?
