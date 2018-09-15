@@ -1,55 +1,42 @@
-input = File.join(File.dirname(__FILE__), '../input.txt')
-$stdin = StringIO.new(File.read(input))
+class Lake
+  attr_reader :left, :right, :area
 
+  def initialize(left, right)
+    @left = left
+    @right = right
+    @area = right - left
+  end
+
+  def under_layer?(lake)
+    lake.left < left && right < lake.right
+  end
+
+  def sum(lake)
+    @area += lake.area
+  end
+end
 
 sections = gets.chomp.split('')
 lakes = []
 
-pos = 0
-while pos < sections.size
-  section = sections[pos]
-  if ['_', '/'].include?(section)
-    pos += 1
-    next
-  end
+down_hill_pos = []
 
-  depth = 1
-  area = 0.5
-  ahead_pos = pos + 1
-  lake_found = false
-
-  while ahead_pos < sections.size
-    ahead_section = sections[ahead_pos]
-
-    if ahead_section == '_'
-      area += depth
-      ahead_pos += 1
-      next
-    end
-
-    if ahead_section == '\\'
-      depth += 1
-      area += 0.5 + (depth - 1)
-      ahead_pos += 1
-      next
-    end
-
-    if ahead_section == '/'
-      area += 0.5 + (depth - 1)
-      depth -= 1
-      if depth.zero?
-        lakes << area
-        pos = ahead_pos + 1
-        lake_found = true
-        break
+sections.each_with_index do |section, i|
+  case section
+  when '_'
+  when '\\'
+    down_hill_pos << i
+  when '/'
+    unless down_hill_pos.empty?
+      lake = Lake.new(down_hill_pos.pop, i)
+      while !lakes.empty? && lakes.last.under_layer?(lake)
+        under_lake = lakes.pop
+        lake.sum(under_lake)
       end
-
-      ahead_pos += 1
+      lakes << lake
     end
   end
-
-  pos += 1 unless lake_found
 end
 
-puts lakes.map(&:to_i).sum
-puts ([lakes.count] + lakes.map(&:to_i)).join("\s")
+puts lakes.sum(0, &:area)
+puts ([lakes.count] + lakes.map(&:area)).join("\s")
