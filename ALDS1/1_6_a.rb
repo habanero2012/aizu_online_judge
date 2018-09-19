@@ -8,7 +8,7 @@ def counting_sort(arr)
     counter[v] = counter[v] + counter[v - 1]
   end
 
-  arr.each do |v|
+  arr.reverse_each do |v|
     result[counter[v] - 1] = v
     counter[v] -= 1
   end
